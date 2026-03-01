@@ -1,0 +1,1722 @@
+[
+  {
+    "ai_ready_schema": {
+      "tables": [
+        {
+          "name": "inventory_logs",
+          "description": null,
+          "columns": [
+            {
+              "column": "notes",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "type",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "quantity_change",
+              "type": "integer",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "inbound_shipment_id",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "deleted_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "product_id",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            }
+          ],
+          "foreign_keys": [
+            {
+              "constraint_name": "inventory_logs_inbound_shipment_id_fkey",
+              "column": "inbound_shipment_id",
+              "foreign_table": "inbound_shipments",
+              "foreign_column": "id",
+              "on_delete": "SET NULL",
+              "on_update": "NO ACTION"
+            },
+            {
+              "constraint_name": "inventory_logs_product_id_fkey",
+              "column": "product_id",
+              "foreign_table": "products",
+              "foreign_column": "id",
+              "on_delete": "CASCADE",
+              "on_update": "NO ACTION"
+            }
+          ]
+        },
+        {
+          "name": "inventory_items",
+          "description": null,
+          "columns": [
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "quantity",
+              "type": "integer",
+              "nullable": "NO",
+              "default": "0",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "product_id",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            }
+          ],
+          "foreign_keys": [
+            {
+              "constraint_name": "inventory_items_product_id_fkey",
+              "column": "product_id",
+              "foreign_table": "products",
+              "foreign_column": "id",
+              "on_delete": "CASCADE",
+              "on_update": "NO ACTION"
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "description": null,
+          "columns": [
+            {
+              "column": "subtotal",
+              "type": "numeric",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "final_amount",
+              "type": "numeric",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_by",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "force_delete_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "deleted_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "updated_by",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "status",
+              "type": "text",
+              "nullable": "NO",
+              "default": "'completed'::text",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "updated_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "payment_method",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "notes",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": "Optional notes or comments for the order"
+            }
+          ],
+          "foreign_keys": [
+            {
+              "constraint_name": "orders_updated_by_fkey",
+              "column": "updated_by",
+              "foreign_table": "profiles",
+              "foreign_column": "id",
+              "on_delete": "NO ACTION",
+              "on_update": "NO ACTION"
+            }
+          ]
+        },
+        {
+          "name": "daily_cash_balance",
+          "description": null,
+          "columns": [
+            {
+              "column": "opening_balance",
+              "type": "numeric",
+              "nullable": "NO",
+              "default": "0",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "updated_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "notes",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "balance_date",
+              "type": "date",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_by",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            }
+          ],
+          "foreign_keys": [
+            {
+              "constraint_name": "daily_cash_balance_created_by_fkey",
+              "column": "created_by",
+              "foreign_table": "profiles",
+              "foreign_column": "id",
+              "on_delete": "NO ACTION",
+              "on_update": "NO ACTION"
+            }
+          ]
+        },
+        {
+          "name": "order_items",
+          "description": null,
+          "columns": [
+            {
+              "column": "quantity",
+              "type": "integer",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "cost_price",
+              "type": "numeric",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "product_id",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "unit_price",
+              "type": "numeric",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "order_id",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            }
+          ],
+          "foreign_keys": [
+            {
+              "constraint_name": "order_items_product_id_fkey",
+              "column": "product_id",
+              "foreign_table": "products",
+              "foreign_column": "id",
+              "on_delete": "NO ACTION",
+              "on_update": "NO ACTION"
+            },
+            {
+              "constraint_name": "order_items_order_id_fkey",
+              "column": "order_id",
+              "foreign_table": "orders",
+              "foreign_column": "id",
+              "on_delete": "CASCADE",
+              "on_update": "NO ACTION"
+            }
+          ]
+        },
+        {
+          "name": "cash_transactions",
+          "description": null,
+          "columns": [
+            {
+              "column": "amount",
+              "type": "numeric",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "updated_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_by",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "transaction_date",
+              "type": "date",
+              "nullable": "NO",
+              "default": "CURRENT_DATE",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "notes",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "description",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "category",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "transaction_type",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            }
+          ],
+          "foreign_keys": [
+            {
+              "constraint_name": "cash_transactions_created_by_fkey",
+              "column": "created_by",
+              "foreign_table": "profiles",
+              "foreign_column": "id",
+              "on_delete": "NO ACTION",
+              "on_update": "NO ACTION"
+            }
+          ]
+        },
+        {
+          "name": "cash_transaction_audit_logs",
+          "description": null,
+          "columns": [
+            {
+              "column": "notes",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "changed_by",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "cash_transaction_id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "action",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "changed_at",
+              "type": "timestamp with time zone",
+              "nullable": "NO",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "changes",
+              "type": "jsonb",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            }
+          ],
+          "foreign_keys": [
+            {
+              "constraint_name": "cash_transaction_audit_logs_changed_by_fkey",
+              "column": "changed_by",
+              "foreign_table": "profiles",
+              "foreign_column": "id",
+              "on_delete": "NO ACTION",
+              "on_update": "NO ACTION"
+            },
+            {
+              "constraint_name": "cash_transaction_audit_logs_cash_transaction_id_fkey",
+              "column": "cash_transaction_id",
+              "foreign_table": "cash_transactions",
+              "foreign_column": "id",
+              "on_delete": "CASCADE",
+              "on_update": "NO ACTION"
+            }
+          ]
+        },
+        {
+          "name": "profiles",
+          "description": null,
+          "columns": [
+            {
+              "column": "role",
+              "type": "text",
+              "nullable": "NO",
+              "default": "'owner'::text",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "username",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "app_settings",
+          "description": null,
+          "columns": [
+            {
+              "column": "value",
+              "type": "jsonb",
+              "nullable": "NO",
+              "default": "'{}'::jsonb",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "description",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "updated_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "updated_by",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "key",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": true,
+              "description": null
+            }
+          ],
+          "foreign_keys": [
+            {
+              "constraint_name": "app_settings_updated_by_fkey",
+              "column": "updated_by",
+              "foreign_table": "profiles",
+              "foreign_column": "id",
+              "on_delete": "NO ACTION",
+              "on_update": "NO ACTION"
+            }
+          ]
+        },
+        {
+          "name": "products",
+          "description": null,
+          "columns": [
+            {
+              "column": "image_url",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "price",
+              "type": "numeric",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "cost_price",
+              "type": "numeric",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "deleted_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": "Timestamp when the product was soft deleted. NULL means the product is active."
+            },
+            {
+              "column": "unit",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": "Unit of measurement for the product (e.g., Cái, Kg, Lít, Hộp, Gói)"
+            },
+            {
+              "column": "sku",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "name",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "order_audit_logs",
+          "description": null,
+          "columns": [
+            {
+              "column": "changes",
+              "type": "jsonb",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "action",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "order_id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "changed_by",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "changed_at",
+              "type": "timestamp with time zone",
+              "nullable": "NO",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "notes",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            }
+          ],
+          "foreign_keys": [
+            {
+              "constraint_name": "order_audit_logs_changed_by_fkey",
+              "column": "changed_by",
+              "foreign_table": "profiles",
+              "foreign_column": "id",
+              "on_delete": "NO ACTION",
+              "on_update": "NO ACTION"
+            },
+            {
+              "constraint_name": "order_audit_logs_order_id_fkey",
+              "column": "order_id",
+              "foreign_table": "orders",
+              "foreign_column": "id",
+              "on_delete": "CASCADE",
+              "on_update": "NO ACTION"
+            }
+          ]
+        },
+        {
+          "name": "invoice_settings",
+          "description": null,
+          "columns": [
+            {
+              "column": "paper_width",
+              "type": "integer",
+              "nullable": "NO",
+              "default": "77",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "show_date_time",
+              "type": "boolean",
+              "nullable": "NO",
+              "default": "true",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "font_size",
+              "type": "integer",
+              "nullable": "NO",
+              "default": "11",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "show_barcode",
+              "type": "boolean",
+              "nullable": "NO",
+              "default": "true",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "show_sku",
+              "type": "boolean",
+              "nullable": "NO",
+              "default": "true",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "show_item_index",
+              "type": "boolean",
+              "nullable": "NO",
+              "default": "true",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "updated_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "store_name_font_size",
+              "type": "integer",
+              "nullable": "YES",
+              "default": "18",
+              "is_primary_key": false,
+              "description": "Font size in pixels for store name"
+            },
+            {
+              "column": "invoice_title_font_size",
+              "type": "integer",
+              "nullable": "YES",
+              "default": "16",
+              "is_primary_key": false,
+              "description": "Font size in pixels for invoice title"
+            },
+            {
+              "column": "store_address_font_size",
+              "type": "integer",
+              "nullable": "YES",
+              "default": "14",
+              "is_primary_key": false,
+              "description": "Font size in pixels for store address"
+            },
+            {
+              "column": "store_phone_font_size",
+              "type": "integer",
+              "nullable": "YES",
+              "default": "14",
+              "is_primary_key": false,
+              "description": "Font size in pixels for store phone"
+            },
+            {
+              "column": "order_id_font_size",
+              "type": "integer",
+              "nullable": "YES",
+              "default": "12",
+              "is_primary_key": false,
+              "description": "Font size in pixels for order ID (MÃ ĐH)"
+            },
+            {
+              "column": "show_total_quantity",
+              "type": "boolean",
+              "nullable": "YES",
+              "default": "true",
+              "is_primary_key": false,
+              "description": "Show total product quantity line above the total amount"
+            },
+            {
+              "column": "store_address",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "store_phone",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "date_time_format",
+              "type": "text",
+              "nullable": "NO",
+              "default": "'vi-VN'::text",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "font_family",
+              "type": "text",
+              "nullable": "NO",
+              "default": "'Courier New'::text",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "text_align",
+              "type": "text",
+              "nullable": "NO",
+              "default": "'center'::text",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "thank_you_message",
+              "type": "text",
+              "nullable": "NO",
+              "default": "'Cảm ơn quý khách!'::text",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "footer_note",
+              "type": "text",
+              "nullable": "NO",
+              "default": "'Hẹn gặp lại'::text",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "store_name",
+              "type": "text",
+              "nullable": "NO",
+              "default": "'CỬA HÀNG'::text",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "invoice_title",
+              "type": "text",
+              "nullable": "NO",
+              "default": "'HÓA ĐƠN BÁN HÀNG'::text",
+              "is_primary_key": false,
+              "description": null
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "suppliers",
+          "description": null,
+          "columns": [
+            {
+              "column": "updated_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "contact_info",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "name",
+              "type": "text",
+              "nullable": "NO",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            }
+          ],
+          "foreign_keys": []
+        },
+        {
+          "name": "inbound_shipments",
+          "description": null,
+          "columns": [
+            {
+              "column": "inbound_date",
+              "type": "date",
+              "nullable": "NO",
+              "default": "CURRENT_DATE",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "notes",
+              "type": "text",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "total_amount",
+              "type": "numeric",
+              "nullable": "NO",
+              "default": "0",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_by",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": "now()",
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "deleted_at",
+              "type": "timestamp with time zone",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            },
+            {
+              "column": "id",
+              "type": "uuid",
+              "nullable": "NO",
+              "default": "gen_random_uuid()",
+              "is_primary_key": true,
+              "description": null
+            },
+            {
+              "column": "supplier_id",
+              "type": "uuid",
+              "nullable": "YES",
+              "default": null,
+              "is_primary_key": false,
+              "description": null
+            }
+          ],
+          "foreign_keys": [
+            {
+              "constraint_name": "inbound_shipments_supplier_id_fkey",
+              "column": "supplier_id",
+              "foreign_table": "suppliers",
+              "foreign_column": "id",
+              "on_delete": "SET NULL",
+              "on_update": "NO ACTION"
+            }
+          ]
+        }
+      ],
+      "enums": null,
+      "indexes": [
+        {
+          "table": "inventory_logs",
+          "name": "inventory_logs_pkey",
+          "definition": "CREATE UNIQUE INDEX inventory_logs_pkey ON public.inventory_logs USING btree (id)"
+        },
+        {
+          "table": "inventory_logs",
+          "name": "idx_inventory_logs_shipment",
+          "definition": "CREATE INDEX idx_inventory_logs_shipment ON public.inventory_logs USING btree (inbound_shipment_id)"
+        },
+        {
+          "table": "inventory_logs",
+          "name": "idx_inventory_logs_deleted_at",
+          "definition": "CREATE INDEX idx_inventory_logs_deleted_at ON public.inventory_logs USING btree (deleted_at)"
+        },
+        {
+          "table": "inventory_items",
+          "name": "inventory_items_pkey",
+          "definition": "CREATE UNIQUE INDEX inventory_items_pkey ON public.inventory_items USING btree (id)"
+        },
+        {
+          "table": "inventory_items",
+          "name": "inventory_items_product_id_key",
+          "definition": "CREATE UNIQUE INDEX inventory_items_product_id_key ON public.inventory_items USING btree (product_id)"
+        },
+        {
+          "table": "order_items",
+          "name": "order_items_pkey",
+          "definition": "CREATE UNIQUE INDEX order_items_pkey ON public.order_items USING btree (id)"
+        },
+        {
+          "table": "orders",
+          "name": "orders_pkey",
+          "definition": "CREATE UNIQUE INDEX orders_pkey ON public.orders USING btree (id)"
+        },
+        {
+          "table": "orders",
+          "name": "idx_orders_force_delete_at",
+          "definition": "CREATE INDEX idx_orders_force_delete_at ON public.orders USING btree (force_delete_at)"
+        },
+        {
+          "table": "orders",
+          "name": "idx_orders_deleted_at",
+          "definition": "CREATE INDEX idx_orders_deleted_at ON public.orders USING btree (deleted_at)"
+        },
+        {
+          "table": "daily_cash_balance",
+          "name": "daily_cash_balance_pkey",
+          "definition": "CREATE UNIQUE INDEX daily_cash_balance_pkey ON public.daily_cash_balance USING btree (id)"
+        },
+        {
+          "table": "daily_cash_balance",
+          "name": "daily_cash_balance_balance_date_key",
+          "definition": "CREATE UNIQUE INDEX daily_cash_balance_balance_date_key ON public.daily_cash_balance USING btree (balance_date)"
+        },
+        {
+          "table": "daily_cash_balance",
+          "name": "idx_daily_cash_balance_date",
+          "definition": "CREATE INDEX idx_daily_cash_balance_date ON public.daily_cash_balance USING btree (balance_date)"
+        },
+        {
+          "table": "cash_transactions",
+          "name": "cash_transactions_pkey",
+          "definition": "CREATE UNIQUE INDEX cash_transactions_pkey ON public.cash_transactions USING btree (id)"
+        },
+        {
+          "table": "cash_transactions",
+          "name": "idx_cash_transactions_date",
+          "definition": "CREATE INDEX idx_cash_transactions_date ON public.cash_transactions USING btree (transaction_date)"
+        },
+        {
+          "table": "cash_transactions",
+          "name": "idx_cash_transactions_type",
+          "definition": "CREATE INDEX idx_cash_transactions_type ON public.cash_transactions USING btree (transaction_type)"
+        },
+        {
+          "table": "cash_transactions",
+          "name": "idx_cash_transactions_created_by",
+          "definition": "CREATE INDEX idx_cash_transactions_created_by ON public.cash_transactions USING btree (created_by)"
+        },
+        {
+          "table": "cash_transaction_audit_logs",
+          "name": "cash_transaction_audit_logs_pkey",
+          "definition": "CREATE UNIQUE INDEX cash_transaction_audit_logs_pkey ON public.cash_transaction_audit_logs USING btree (id)"
+        },
+        {
+          "table": "cash_transaction_audit_logs",
+          "name": "idx_cash_transaction_audit_logs_transaction_id",
+          "definition": "CREATE INDEX idx_cash_transaction_audit_logs_transaction_id ON public.cash_transaction_audit_logs USING btree (cash_transaction_id)"
+        },
+        {
+          "table": "cash_transaction_audit_logs",
+          "name": "idx_cash_transaction_audit_logs_changed_at",
+          "definition": "CREATE INDEX idx_cash_transaction_audit_logs_changed_at ON public.cash_transaction_audit_logs USING btree (changed_at DESC)"
+        },
+        {
+          "table": "profiles",
+          "name": "profiles_pkey",
+          "definition": "CREATE UNIQUE INDEX profiles_pkey ON public.profiles USING btree (id)"
+        },
+        {
+          "table": "profiles",
+          "name": "profiles_username_key",
+          "definition": "CREATE UNIQUE INDEX profiles_username_key ON public.profiles USING btree (username)"
+        },
+        {
+          "table": "products",
+          "name": "products_pkey",
+          "definition": "CREATE UNIQUE INDEX products_pkey ON public.products USING btree (id)"
+        },
+        {
+          "table": "products",
+          "name": "products_sku_key",
+          "definition": "CREATE UNIQUE INDEX products_sku_key ON public.products USING btree (sku)"
+        },
+        {
+          "table": "products",
+          "name": "idx_products_deleted_at",
+          "definition": "CREATE INDEX idx_products_deleted_at ON public.products USING btree (deleted_at) WHERE (deleted_at IS NULL)"
+        },
+        {
+          "table": "app_settings",
+          "name": "app_settings_pkey",
+          "definition": "CREATE UNIQUE INDEX app_settings_pkey ON public.app_settings USING btree (key)"
+        },
+        {
+          "table": "order_audit_logs",
+          "name": "order_audit_logs_pkey",
+          "definition": "CREATE UNIQUE INDEX order_audit_logs_pkey ON public.order_audit_logs USING btree (id)"
+        },
+        {
+          "table": "order_audit_logs",
+          "name": "idx_order_audit_logs_order_id",
+          "definition": "CREATE INDEX idx_order_audit_logs_order_id ON public.order_audit_logs USING btree (order_id)"
+        },
+        {
+          "table": "order_audit_logs",
+          "name": "idx_order_audit_logs_changed_at",
+          "definition": "CREATE INDEX idx_order_audit_logs_changed_at ON public.order_audit_logs USING btree (changed_at)"
+        },
+        {
+          "table": "invoice_settings",
+          "name": "invoice_settings_pkey",
+          "definition": "CREATE UNIQUE INDEX invoice_settings_pkey ON public.invoice_settings USING btree (id)"
+        },
+        {
+          "table": "inbound_shipments",
+          "name": "inbound_shipments_pkey",
+          "definition": "CREATE UNIQUE INDEX inbound_shipments_pkey ON public.inbound_shipments USING btree (id)"
+        },
+        {
+          "table": "inbound_shipments",
+          "name": "idx_inbound_shipments_date",
+          "definition": "CREATE INDEX idx_inbound_shipments_date ON public.inbound_shipments USING btree (inbound_date)"
+        },
+        {
+          "table": "inbound_shipments",
+          "name": "idx_inbound_shipments_supplier",
+          "definition": "CREATE INDEX idx_inbound_shipments_supplier ON public.inbound_shipments USING btree (supplier_id)"
+        },
+        {
+          "table": "inbound_shipments",
+          "name": "idx_inbound_shipments_deleted_at",
+          "definition": "CREATE INDEX idx_inbound_shipments_deleted_at ON public.inbound_shipments USING btree (deleted_at)"
+        },
+        {
+          "table": "suppliers",
+          "name": "suppliers_pkey",
+          "definition": "CREATE UNIQUE INDEX suppliers_pkey ON public.suppliers USING btree (id)"
+        },
+        {
+          "table": "suppliers",
+          "name": "suppliers_name_key",
+          "definition": "CREATE UNIQUE INDEX suppliers_name_key ON public.suppliers USING btree (name)"
+        },
+        {
+          "table": "suppliers",
+          "name": "idx_suppliers_name",
+          "definition": "CREATE INDEX idx_suppliers_name ON public.suppliers USING btree (name)"
+        }
+      ],
+      "views": null,
+      "rls_policies": [
+        {
+          "table": "order_audit_logs",
+          "name": "Allow authenticated users to view audit logs",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "order_audit_logs",
+          "name": "Allow authenticated users to insert audit logs",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "true"
+        },
+        {
+          "table": "invoice_settings",
+          "name": "invoice_settings_select",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "invoice_settings",
+          "name": "invoice_settings_insert",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "true"
+        },
+        {
+          "table": "invoice_settings",
+          "name": "invoice_settings_update",
+          "command": "UPDATE",
+          "using_qual": "true",
+          "with_check": "true"
+        },
+        {
+          "table": "invoice_settings",
+          "name": "invoice_settings_delete",
+          "command": "DELETE",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "app_settings",
+          "name": "Enable read access for authenticated users",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "app_settings",
+          "name": "Enable insert for authenticated users",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "(auth.uid() IN ( SELECT profiles.id\n   FROM profiles\n  WHERE (profiles.role = ANY (ARRAY['owner'::text, 'admin'::text]))))"
+        },
+        {
+          "table": "app_settings",
+          "name": "Enable update for authenticated users",
+          "command": "UPDATE",
+          "using_qual": "(auth.uid() IN ( SELECT profiles.id\n   FROM profiles\n  WHERE (profiles.role = ANY (ARRAY['owner'::text, 'admin'::text]))))",
+          "with_check": "(auth.uid() IN ( SELECT profiles.id\n   FROM profiles\n  WHERE (profiles.role = ANY (ARRAY['owner'::text, 'admin'::text]))))"
+        },
+        {
+          "table": "app_settings",
+          "name": "Enable delete for authenticated users",
+          "command": "DELETE",
+          "using_qual": "(auth.uid() IN ( SELECT profiles.id\n   FROM profiles\n  WHERE (profiles.role = ANY (ARRAY['owner'::text, 'admin'::text]))))",
+          "with_check": null
+        },
+        {
+          "table": "orders",
+          "name": "Authenticated users can update orders",
+          "command": "UPDATE",
+          "using_qual": "true",
+          "with_check": "true"
+        },
+        {
+          "table": "order_items",
+          "name": "Authenticated users can delete order items",
+          "command": "DELETE",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "order_items",
+          "name": "Authenticated users can update order items",
+          "command": "UPDATE",
+          "using_qual": "true",
+          "with_check": "true"
+        },
+        {
+          "table": "order_audit_logs",
+          "name": "Authenticated users can create audit logs",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "true"
+        },
+        {
+          "table": "order_audit_logs",
+          "name": "Authenticated users can read audit logs",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "cash_transaction_audit_logs",
+          "name": "cash_transaction_audit_logs_select_policy",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "cash_transaction_audit_logs",
+          "name": "cash_transaction_audit_logs_insert_policy",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "true"
+        },
+        {
+          "table": "profiles",
+          "name": "Users can update own profile",
+          "command": "UPDATE",
+          "using_qual": "(id = auth.uid())",
+          "with_check": "(id = auth.uid())"
+        },
+        {
+          "table": "products",
+          "name": "Authenticated users can read products",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "products",
+          "name": "Owners can manage products",
+          "command": "ALL",
+          "using_qual": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'owner'::text))))",
+          "with_check": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'owner'::text))))"
+        },
+        {
+          "table": "inventory_items",
+          "name": "Authenticated users can read inventory",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "inventory_items",
+          "name": "Owners can manage inventory",
+          "command": "ALL",
+          "using_qual": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'owner'::text))))",
+          "with_check": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'owner'::text))))"
+        },
+        {
+          "table": "inventory_logs",
+          "name": "Authenticated users can read logs",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "inventory_logs",
+          "name": "Owners can create logs",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'owner'::text))))"
+        },
+        {
+          "table": "orders",
+          "name": "Authenticated users can read orders",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "orders",
+          "name": "Authenticated users can create orders",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "true"
+        },
+        {
+          "table": "order_items",
+          "name": "Authenticated users can read order items",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "order_items",
+          "name": "Authenticated users can create order items",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "true"
+        },
+        {
+          "table": "cash_transactions",
+          "name": "allow_select_cash_transactions",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "cash_transactions",
+          "name": "allow_insert_cash_transactions",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "(created_by = auth.uid())"
+        },
+        {
+          "table": "cash_transactions",
+          "name": "allow_update_cash_transactions_owners",
+          "command": "UPDATE",
+          "using_qual": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'owner'::text))))",
+          "with_check": null
+        },
+        {
+          "table": "cash_transactions",
+          "name": "allow_delete_cash_transactions_owners",
+          "command": "DELETE",
+          "using_qual": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'owner'::text))))",
+          "with_check": null
+        },
+        {
+          "table": "daily_cash_balance",
+          "name": "allow_select_daily_cash_balance",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "daily_cash_balance",
+          "name": "allow_insert_daily_cash_balance_owners",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'owner'::text))))"
+        },
+        {
+          "table": "daily_cash_balance",
+          "name": "allow_update_daily_cash_balance_owners",
+          "command": "UPDATE",
+          "using_qual": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'owner'::text))))",
+          "with_check": null
+        },
+        {
+          "table": "daily_cash_balance",
+          "name": "allow_delete_daily_cash_balance_owners",
+          "command": "DELETE",
+          "using_qual": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'owner'::text))))",
+          "with_check": null
+        },
+        {
+          "table": "suppliers",
+          "name": "Authenticated users can read suppliers",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "suppliers",
+          "name": "Authenticated users can insert suppliers",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "true"
+        },
+        {
+          "table": "suppliers",
+          "name": "Authenticated users can update suppliers",
+          "command": "UPDATE",
+          "using_qual": "true",
+          "with_check": "true"
+        },
+        {
+          "table": "suppliers",
+          "name": "Authenticated users can delete suppliers",
+          "command": "DELETE",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "inbound_shipments",
+          "name": "Authenticated users can read inbound shipments",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "inbound_shipments",
+          "name": "Authenticated users can create inbound shipments",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "true"
+        },
+        {
+          "table": "inbound_shipments",
+          "name": "Authenticated users can update inbound shipments",
+          "command": "UPDATE",
+          "using_qual": "true",
+          "with_check": "true"
+        },
+        {
+          "table": "inbound_shipments",
+          "name": "Authenticated users can delete inbound shipments",
+          "command": "DELETE",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "profiles",
+          "name": "Authenticated users can read profiles",
+          "command": "SELECT",
+          "using_qual": "true",
+          "with_check": null
+        },
+        {
+          "table": "profiles",
+          "name": "Users can insert own profile",
+          "command": "INSERT",
+          "using_qual": null,
+          "with_check": "(id = auth.uid())"
+        }
+      ],
+      "functions": [
+        {
+          "name": "soft_delete_inbound_shipment",
+          "definition": "\r\nBEGIN\r\n  -- Soft delete the inbound shipment\r\n  UPDATE inbound_shipments\r\n  SET deleted_at = NOW()\r\n  WHERE id = shipment_id\r\n    AND deleted_at IS NULL;\r\n\r\n  -- Soft delete all related inventory logs\r\n  UPDATE inventory_logs\r\n  SET deleted_at = NOW()\r\n  WHERE inbound_shipment_id = shipment_id\r\n    AND deleted_at IS NULL;\r\nEND;\r\n"
+        },
+        {
+          "name": "check_daily_balance_exists",
+          "definition": "\r\nDECLARE\r\n  v_exists BOOLEAN;\r\nBEGIN\r\n  SELECT EXISTS(SELECT 1 FROM daily_cash_balance WHERE balance_date = p_date)\r\n  INTO v_exists;\r\n  \r\n  RETURN v_exists;\r\nEND;\r\n"
+        },
+        {
+          "name": "update_invoice_settings_updated_at",
+          "definition": "\r\nBEGIN\r\n  NEW.updated_at = now();\r\n  RETURN NEW;\r\nEND;\r\n"
+        },
+        {
+          "name": "create_inventory_for_product",
+          "definition": "\r\nBEGIN\r\n  INSERT INTO inventory_items (product_id, quantity)\r\n  VALUES (NEW.id, 0);\r\n  RETURN NEW;\r\nEND;\r\n"
+        },
+        {
+          "name": "update_inventory_on_log",
+          "definition": "\r\nBEGIN\r\n  UPDATE inventory_items\r\n  SET quantity = quantity + NEW.quantity_change\r\n  WHERE product_id = NEW.product_id;\r\n  RETURN NEW;\r\nEND;\r\n"
+        },
+        {
+          "name": "deduct_inventory_on_order",
+          "definition": "\r\nBEGIN\r\n  UPDATE inventory_items\r\n  SET quantity = quantity - NEW.quantity\r\n  WHERE product_id = NEW.product_id;\r\n  RETURN NEW;\r\nEND;\r\n"
+        },
+        {
+          "name": "handle_new_user",
+          "definition": "\r\nBEGIN\r\n  INSERT INTO public.profiles (id, username, role)\r\n  VALUES (\r\n    NEW.id,\r\n    COALESCE(NEW.raw_user_meta_data->>'username', SPLIT_PART(NEW.email, '@', 1)),\r\n    COALESCE(NEW.raw_user_meta_data->>'role', 'owner')\r\n  )\r\n  ON CONFLICT (id) DO NOTHING;\r\n  RETURN NEW;\r\nEND;\r\n"
+        },
+        {
+          "name": "update_daily_cash_balance_for_date",
+          "definition": "\r\nDECLARE\r\n  v_opening_balance NUMERIC;\r\n  v_prev_date DATE;\r\n  v_record_exists BOOLEAN;\r\nBEGIN\r\n  -- Get previous day's date\r\n  v_prev_date := p_date - INTERVAL '1 day';\r\n  \r\n  -- Check if there's already a record for this date\r\n  SELECT EXISTS(SELECT 1 FROM daily_cash_balance WHERE balance_date = p_date)\r\n  INTO v_record_exists;\r\n  \r\n  -- If record exists and not forcing update, skip\r\n  IF v_record_exists AND NOT force_update THEN\r\n    RETURN;\r\n  END IF;\r\n  \r\n  -- Calculate opening balance from previous day's closing (UPDATED with force_delete_at filter)\r\n  SELECT\r\n    COALESCE(\r\n      dcb.opening_balance +\r\n      (SELECT COALESCE(SUM(final_amount), 0) FROM orders WHERE payment_method = 'cash' AND DATE(created_at) = v_prev_date AND status = 'completed' AND deleted_at IS NULL AND force_delete_at IS NULL) +\r\n      (SELECT COALESCE(SUM(amount), 0) FROM cash_transactions WHERE transaction_type = 'income' AND transaction_date = v_prev_date) -\r\n      (SELECT COALESCE(SUM(amount), 0) FROM cash_transactions WHERE transaction_type = 'expense' AND transaction_date = v_prev_date),\r\n      0\r\n    )\r\n  INTO v_opening_balance\r\n  FROM daily_cash_balance dcb\r\n  WHERE dcb.balance_date = v_prev_date;\r\n  \r\n  -- If no previous record found, default to 0\r\n  v_opening_balance := COALESCE(v_opening_balance, 0);\r\n  \r\n  -- Insert or update the record\r\n  IF force_update AND v_record_exists THEN\r\n    -- Update existing record\r\n    UPDATE daily_cash_balance\r\n    SET \r\n      opening_balance = v_opening_balance,\r\n      notes = COALESCE(notes, '') || ' [Updated: ' || NOW()::TEXT || ']',\r\n      updated_at = NOW()\r\n    WHERE balance_date = p_date;\r\n  ELSE\r\n    -- Insert new record (with conflict handling)\r\n    INSERT INTO daily_cash_balance (balance_date, opening_balance, notes)\r\n    VALUES (p_date, v_opening_balance, 'Auto-generated from transactions')\r\n    ON CONFLICT (balance_date) DO NOTHING; -- Don't override if already exists\r\n  END IF;\r\nEND;\r\n"
+        },
+        {
+          "name": "get_daily_cash_summary",
+          "definition": "\r\nDECLARE\r\n  v_opening_balance NUMERIC := 0;\r\n  v_cash_sales NUMERIC := 0;\r\n  v_other_income NUMERIC := 0;\r\n  v_total_expenses NUMERIC := 0;\r\n  v_closing_balance NUMERIC := 0;\r\n  v_record_exists BOOLEAN := FALSE;\r\nBEGIN\r\n  -- Check if opening balance record exists for the target date\r\n  SELECT EXISTS(SELECT 1 FROM daily_cash_balance WHERE balance_date = target_date)\r\n  INTO v_record_exists;\r\n  \r\n  -- Get opening balance if record exists\r\n  IF v_record_exists THEN\r\n    SELECT COALESCE(dcb.opening_balance, 0)\r\n    INTO v_opening_balance\r\n    FROM daily_cash_balance dcb\r\n    WHERE dcb.balance_date = target_date;\r\n  ELSE\r\n    -- No record exists, calculate from previous day's closing\r\n    DECLARE\r\n      v_prev_opening NUMERIC := 0;\r\n      v_prev_sales NUMERIC := 0;\r\n      v_prev_income NUMERIC := 0;\r\n      v_prev_expenses NUMERIC := 0;\r\n      v_prev_date DATE := target_date - INTERVAL '1 day';\r\n      v_prev_record_exists BOOLEAN := FALSE;\r\n    BEGIN\r\n      -- Check if previous day has a record\r\n      SELECT EXISTS(SELECT 1 FROM daily_cash_balance WHERE balance_date = v_prev_date)\r\n      INTO v_prev_record_exists;\r\n      \r\n      IF v_prev_record_exists THEN\r\n        SELECT COALESCE(dcb.opening_balance, 0)\r\n        INTO v_prev_opening\r\n        FROM daily_cash_balance dcb\r\n        WHERE dcb.balance_date = v_prev_date;\r\n      ELSE\r\n        v_prev_opening := 0;\r\n      END IF;\r\n      \r\n      -- Calculate previous day's cash sales (FIX: Added deleted_at IS NULL AND force_delete_at IS NULL)\r\n      SELECT COALESCE(SUM(final_amount), 0)\r\n      INTO v_prev_sales\r\n      FROM orders\r\n      WHERE payment_method = 'cash'\r\n        AND DATE(created_at) = v_prev_date\r\n        AND status = 'completed'\r\n        AND deleted_at IS NULL\r\n        AND force_delete_at IS NULL;\r\n      \r\n      -- Calculate previous day's other income\r\n      SELECT COALESCE(SUM(amount), 0)\r\n      INTO v_prev_income\r\n      FROM cash_transactions\r\n      WHERE transaction_type = 'income'\r\n        AND transaction_date = v_prev_date;\r\n      \r\n      -- Calculate previous day's expenses\r\n      SELECT COALESCE(SUM(amount), 0)\r\n      INTO v_prev_expenses\r\n      FROM cash_transactions\r\n      WHERE transaction_type = 'expense'\r\n        AND transaction_date = v_prev_date;\r\n      \r\n      -- Calculate previous day's closing which becomes today's opening\r\n      v_opening_balance := v_prev_opening + v_prev_sales + v_prev_income - v_prev_expenses;\r\n    END;\r\n  END IF;\r\n  \r\n  -- Calculate cash sales from orders (only cash payment method) (FIX: Added deleted_at IS NULL AND force_delete_at IS NULL)\r\n  SELECT COALESCE(SUM(final_amount), 0)\r\n  INTO v_cash_sales\r\n  FROM orders\r\n  WHERE payment_method = 'cash'\r\n    AND DATE(created_at) = target_date\r\n    AND status = 'completed'\r\n    AND deleted_at IS NULL\r\n    AND force_delete_at IS NULL;\r\n  \r\n  -- Calculate other income from cash_transactions (income type)\r\n  SELECT COALESCE(SUM(amount), 0)\r\n  INTO v_other_income\r\n  FROM cash_transactions\r\n  WHERE transaction_type = 'income'\r\n    AND transaction_date = target_date;\r\n  \r\n  -- Calculate total expenses from cash_transactions (expense type)\r\n  SELECT COALESCE(SUM(amount), 0)\r\n  INTO v_total_expenses\r\n  FROM cash_transactions\r\n  WHERE transaction_type = 'expense'\r\n    AND transaction_date = target_date;\r\n  \r\n  -- Calculate closing balance\r\n  v_closing_balance := v_opening_balance + v_cash_sales + v_other_income - v_total_expenses;\r\n  \r\n  -- Return the results\r\n  RETURN QUERY SELECT \r\n    v_opening_balance,\r\n    v_cash_sales,\r\n    v_other_income,\r\n    v_total_expenses,\r\n    v_closing_balance;\r\nEND;\r\n"
+        },
+        {
+          "name": "restore_inventory_on_force_delete",
+          "definition": "\r\nBEGIN\r\n  -- When force_delete_at is set (from NULL to NOT NULL), restore inventory\r\n  IF OLD.force_delete_at IS NULL AND NEW.force_delete_at IS NOT NULL THEN\r\n    -- Restore inventory for each order item (reverse the deduction)\r\n    UPDATE inventory_items\r\n    SET quantity = inventory_items.quantity + oi.quantity\r\n    FROM order_items oi\r\n    WHERE oi.order_id = NEW.id\r\n      AND inventory_items.product_id = oi.product_id;\r\n  END IF;\r\n  \r\n  -- When force_delete_at is unset (from NOT NULL to NULL), deduct inventory again\r\n  IF OLD.force_delete_at IS NOT NULL AND NEW.force_delete_at IS NULL THEN\r\n    -- Deduct inventory for each order item\r\n    UPDATE inventory_items\r\n    SET quantity = inventory_items.quantity - oi.quantity\r\n    FROM order_items oi\r\n    WHERE oi.order_id = NEW.id\r\n      AND inventory_items.product_id = oi.product_id;\r\n  END IF;\r\n  \r\n  RETURN NEW;\r\nEND;\r\n"
+        },
+        {
+          "name": "log_order_update",
+          "definition": "\r\nDECLARE\r\n  changes_obj JSONB := '{}'::jsonb;\r\nBEGIN\r\n  -- Track what changed\r\n  IF OLD.subtotal != NEW.subtotal THEN\r\n    changes_obj := changes_obj || jsonb_build_object('subtotal', jsonb_build_object('old', OLD.subtotal, 'new', NEW.subtotal));\r\n  END IF;\r\n  \r\n  IF OLD.final_amount != NEW.final_amount THEN\r\n    changes_obj := changes_obj || jsonb_build_object('final_amount', jsonb_build_object('old', OLD.final_amount, 'new', NEW.final_amount));\r\n  END IF;\r\n  \r\n  IF OLD.payment_method != NEW.payment_method THEN\r\n    changes_obj := changes_obj || jsonb_build_object('payment_method', jsonb_build_object('old', OLD.payment_method, 'new', NEW.payment_method));\r\n  END IF;\r\n  \r\n  IF OLD.status != NEW.status THEN\r\n    changes_obj := changes_obj || jsonb_build_object('status', jsonb_build_object('old', OLD.status, 'new', NEW.status));\r\n  END IF;\r\n  \r\n  -- Track notes changes (handle NULL values)\r\n  IF (OLD.notes IS DISTINCT FROM NEW.notes) THEN\r\n    changes_obj := changes_obj || jsonb_build_object('notes', jsonb_build_object('old', OLD.notes, 'new', NEW.notes));\r\n  END IF;\r\n\r\n  -- Track deleted_at changes (handle NULL values)\r\n  IF (OLD.deleted_at IS DISTINCT FROM NEW.deleted_at) THEN\r\n    changes_obj := changes_obj || jsonb_build_object('deleted_at', jsonb_build_object('old', OLD.deleted_at, 'new', NEW.deleted_at));\r\n  END IF;\r\n\r\n  -- Track force_delete_at changes (handle NULL values)\r\n  IF (OLD.force_delete_at IS DISTINCT FROM NEW.force_delete_at) THEN\r\n    changes_obj := changes_obj || jsonb_build_object('force_delete_at', jsonb_build_object('old', OLD.force_delete_at, 'new', NEW.force_delete_at));\r\n  END IF;\r\n\r\n  -- Only log if there were actual changes\r\n  IF changes_obj != '{}'::jsonb THEN\r\n    INSERT INTO order_audit_logs (order_id, action, changed_by, changes)\r\n    VALUES (\r\n      NEW.id,\r\n      'updated',\r\n      NEW.updated_by,\r\n      changes_obj\r\n    );\r\n  END IF;\r\n  \r\n  RETURN NEW;\r\nEND;\r\n"
+        },
+        {
+          "name": "log_order_creation",
+          "definition": "\r\nBEGIN\r\n  INSERT INTO order_audit_logs (order_id, action, changed_by, changes)\r\n  VALUES (\r\n    NEW.id,\r\n    'created',\r\n    NEW.created_by,\r\n    jsonb_build_object(\r\n      'subtotal', NEW.subtotal,\r\n      'final_amount', NEW.final_amount,\r\n      'payment_method', NEW.payment_method,\r\n      'status', NEW.status,\r\n      'notes', NEW.notes\r\n    )\r\n  );\r\n  RETURN NEW;\r\nEND;\r\n"
+        },
+        {
+          "name": "update_daily_cash_balance_for_date",
+          "definition": "\r\nDECLARE\r\n  v_opening_balance NUMERIC;\r\n  v_prev_date DATE;\r\n  v_prev_record_exists BOOLEAN;\r\nBEGIN\r\n  -- Get previous day's date\r\n  v_prev_date := p_date - INTERVAL '1 day';\r\n  \r\n  -- Check if there's already a record for this date\r\n  SELECT EXISTS(SELECT 1 FROM daily_cash_balance WHERE balance_date = p_date)\r\n  INTO v_prev_record_exists;\r\n  \r\n  IF v_prev_record_exists THEN\r\n    -- Record already exists, don't update it (allow manual overrides)\r\n    RETURN;\r\n  END IF;\r\n  \r\n  -- Calculate opening balance from previous day's closing\r\n  SELECT\r\n    COALESCE(\r\n      dcb.opening_balance +\r\n      (SELECT COALESCE(SUM(final_amount), 0) FROM orders WHERE payment_method = 'cash' AND DATE(created_at) = v_prev_date AND status = 'completed') +\r\n      (SELECT COALESCE(SUM(amount), 0) FROM cash_transactions WHERE transaction_type = 'income' AND transaction_date = v_prev_date) -\r\n      (SELECT COALESCE(SUM(amount), 0) FROM cash_transactions WHERE transaction_type = 'expense' AND transaction_date = v_prev_date),\r\n      0\r\n    )\r\n  INTO v_opening_balance\r\n  FROM daily_cash_balance dcb\r\n  WHERE dcb.balance_date = v_prev_date;\r\n  \r\n  -- If no previous record found, default to 0\r\n  v_opening_balance := COALESCE(v_opening_balance, 0);\r\n  \r\n  -- Insert or update the record\r\n  INSERT INTO daily_cash_balance (balance_date, opening_balance, notes)\r\n  VALUES (p_date, v_opening_balance, 'Auto-generated from transactions')\r\n  ON CONFLICT (balance_date) DO NOTHING; -- Don't override if already exists\r\nEND;\r\n"
+        },
+        {
+          "name": "auto_update_daily_balance_on_order",
+          "definition": "\r\nBEGIN\r\n  -- Only process cash orders that are not deleted or force deleted\r\n  IF NEW.payment_method = 'cash' AND NEW.status = 'completed' AND NEW.deleted_at IS NULL AND NEW.force_delete_at IS NULL THEN\r\n    -- Update daily_cash_balance for the order date (don't force)\r\n    PERFORM update_daily_cash_balance_for_date(DATE(NEW.created_at), FALSE);\r\n    \r\n    -- Also update the next day with force to ensure chain is correct\r\n    PERFORM update_daily_cash_balance_for_date(\r\n      (DATE(NEW.created_at) + INTERVAL '1 day')::DATE,\r\n      TRUE\r\n    );\r\n  END IF;\r\n  \r\n  RETURN NEW;\r\nEND;\r\n"
+        },
+        {
+          "name": "auto_update_daily_balance_on_transaction",
+          "definition": "\r\nBEGIN\r\n  -- Update daily_cash_balance for the transaction date (don't force)\r\n  PERFORM update_daily_cash_balance_for_date(NEW.transaction_date, FALSE);\r\n  \r\n  -- Also update the next day with force to ensure chain is correct\r\n  PERFORM update_daily_cash_balance_for_date(\r\n    (NEW.transaction_date + INTERVAL '1 day')::DATE,\r\n    TRUE\r\n  );\r\n  \r\n  RETURN NEW;\r\nEND;\r\n"
+        },
+        {
+          "name": "log_cash_transaction_changes",
+          "definition": "\r\nDECLARE\r\n  v_user_id uuid;\r\n  v_changes jsonb;\r\nBEGIN\r\n  -- Get current user ID from app metadata or use a default\r\n  v_user_id := auth.uid();\r\n  \r\n  IF v_user_id IS NULL THEN\r\n    -- If no auth context, try to get from the row being modified\r\n    v_user_id := COALESCE(NEW.created_by, OLD.created_by);\r\n  END IF;\r\n\r\n  -- Only proceed if we have a user ID\r\n  IF v_user_id IS NOT NULL THEN\r\n    IF (TG_OP = 'INSERT') THEN\r\n      INSERT INTO cash_transaction_audit_logs (\r\n        cash_transaction_id,\r\n        action,\r\n        changed_by,\r\n        changed_at,\r\n        changes\r\n      ) VALUES (\r\n        NEW.id,\r\n        'created',\r\n        v_user_id,\r\n        now(),\r\n        jsonb_build_object(\r\n          'transaction_date', NEW.transaction_date,\r\n          'transaction_type', NEW.transaction_type,\r\n          'amount', NEW.amount,\r\n          'category', NEW.category,\r\n          'description', NEW.description,\r\n          'notes', NEW.notes\r\n        )\r\n      );\r\n      \r\n    ELSIF (TG_OP = 'UPDATE') THEN\r\n      -- Build changes object only for modified fields\r\n      v_changes := jsonb_build_object(\r\n        'before', jsonb_build_object(\r\n          'transaction_date', OLD.transaction_date,\r\n          'transaction_type', OLD.transaction_type,\r\n          'amount', OLD.amount,\r\n          'category', OLD.category,\r\n          'description', OLD.description,\r\n          'notes', OLD.notes,\r\n          'updated_at', OLD.updated_at\r\n        ),\r\n        'after', jsonb_build_object(\r\n          'transaction_date', NEW.transaction_date,\r\n          'transaction_type', NEW.transaction_type,\r\n          'amount', NEW.amount,\r\n          'category', NEW.category,\r\n          'description', NEW.description,\r\n          'notes', NEW.notes,\r\n          'updated_at', NEW.updated_at\r\n        )\r\n      );\r\n      \r\n      INSERT INTO cash_transaction_audit_logs (\r\n        cash_transaction_id,\r\n        action,\r\n        changed_by,\r\n        changed_at,\r\n        changes\r\n      ) VALUES (\r\n        NEW.id,\r\n        'updated',\r\n        v_user_id,\r\n        now(),\r\n        v_changes\r\n      );\r\n      \r\n    ELSIF (TG_OP = 'DELETE') THEN\r\n      INSERT INTO cash_transaction_audit_logs (\r\n        cash_transaction_id,\r\n        action,\r\n        changed_by,\r\n        changed_at,\r\n        changes\r\n      ) VALUES (\r\n        OLD.id,\r\n        'deleted',\r\n        v_user_id,\r\n        now(),\r\n        jsonb_build_object(\r\n          'transaction_date', OLD.transaction_date,\r\n          'transaction_type', OLD.transaction_type,\r\n          'amount', OLD.amount,\r\n          'category', OLD.category,\r\n          'description', OLD.description,\r\n          'notes', OLD.notes\r\n        )\r\n      );\r\n    END IF;\r\n  END IF;\r\n  \r\n  RETURN COALESCE(NEW, OLD);\r\nEND;\r\n"
+        }
+      ]
+    }
+  }
+]
